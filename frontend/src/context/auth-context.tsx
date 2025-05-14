@@ -2,15 +2,13 @@ import { createContext, useContext, useState, useEffect, useMemo } from "react"
 import { useNavigate } from "react-router-dom"
 import { toast } from "sonner"
 import axios, { type AxiosInstance } from "axios"
-import Cookies from "js-cookie"
 const AuthContext = createContext(null)
 
 export function AuthProvider({ children }) {
-  const [token, setToken] = useState(Cookies.get("token") || null)
+  const [token, setToken] = useState(localStorage.getItem("token") || null)
   const [user, setUser] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const navigate = useNavigate()
-
   const api = useMemo(() => {
     return axios.create({
       baseURL: API_URL,
@@ -44,7 +42,7 @@ export function AuthProvider({ children }) {
       })
       setUser(response.user)
       setToken(response.token)
-      Cookies.set("token", response.token)
+      localStorage.setItem("token", response.token)
       navigate("/")
     } catch (error) {
       toast.error(error.response.data.message)
@@ -70,7 +68,7 @@ export function AuthProvider({ children }) {
   const logout = () => {
     setUser(null)
     setToken(null)
-    Cookies.remove("token")
+    localStorage.removeItem("token")
     navigate("/login")
 
     toast.success("Logged out", {
