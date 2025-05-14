@@ -19,6 +19,7 @@ const SECRET_KEY = process.env.JWT_SECRET;
 const authenticateToken = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const authHeader = req.headers["authorization"];
     const token = authHeader && authHeader.split(" ")[1];
+    console.log("Token:", token); // Log the token for debugging
     if (!token) {
         res.status(401).json({ message: "Access token is missing or invalid" });
         return; // Ensure no further code execution

@@ -13,7 +13,7 @@ export const authenticateToken = async (
 ): Promise<void> => {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
-
+  console.log("Token:", token); // Log the token for debugging
   if (!token) {
     res.status(401).json({ message: "Access token is missing or invalid" });
     return; // Ensure no further code execution
